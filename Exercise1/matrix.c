@@ -390,7 +390,7 @@ bool read_matrix (const char* matrix_input_filename, Matrix_t** m) {
 	}
 
 	load_matrix(*m,data);
-
+	free(data);
 	if (close(fd)) {
 		return false;
 
@@ -511,7 +511,7 @@ bool random_matrix(Matrix_t* m, unsigned int start_range, unsigned int end_range
 	
 	for (unsigned int i = 0; i < m->rows; ++i) {
 		for (unsigned int j = 0; j < m->cols; ++j) {
-			m->data[i * m->cols + j] = rand() % end_range + start_range;
+			m->data[i * m->cols + j] = rand() % (end_range + 1 - start_range) + start_range;
 		}
 	}
 	return true;
