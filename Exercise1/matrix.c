@@ -34,7 +34,27 @@ bool create_matrix (Matrix_t** new_matrix, const char* name, const unsigned int 
 						const unsigned int cols) {
 
 	//TODO ERROR CHECK INCOMING PARAMETERS
-
+    if((*new_matrix) != null){
+		printf("the matrix is not empty!\n");
+		return false;
+	}
+	
+	 if(name== null){
+		printf("no matrix name detected!\n");
+		return false;
+	}
+	
+	 if( rows<0){
+		printf("Invalid row variable!\n");
+		return false;
+	}
+	
+	 if( cols<0){
+		printf("Invalid cols variable!\n");
+		return false;
+	}
+	
+	
 	*new_matrix = calloc(1,sizeof(Matrix_t));
 	if (!(*new_matrix)) {
 		return false;
@@ -55,8 +75,18 @@ bool create_matrix (Matrix_t** new_matrix, const char* name, const unsigned int 
 }
 
 	//TODO FUNCTION COMMENT
-
+/*
+ * PURPOSE:release the given memory that was taken to store the matrix's data array 
+ * INPUTS:the pointer of the matrix array
+ * RETURN:NULL
+ **/
 void destroy_matrix (Matrix_t** m) {
+
+    if (*m==null){
+		printf("Missing source matrix array!\n";
+		return;
+	}
+
 
 	//TODO ERROR CHECK INCOMING PARAMETERS
 	
@@ -68,12 +98,22 @@ void destroy_matrix (Matrix_t** m) {
 
 	
 	//TODO FUNCTION COMMENT
+	/*
+ * PURPOSE:compare the two matrix by looking into it's data variable and the  number of bytes to compare
+ * INPUTS:
+ the pointer that points to a mastrix structure
+ the pointer that points to another mastrix structure
+ * RETURN: Ture if the contents of both memory blocks are equal 
+ false if they are not equal or any matrix is empty or the any data variable of the structures is empty
+ **/
 bool equal_matrices (Matrix_t* a, Matrix_t* b) {
 
 	//TODO ERROR CHECK INCOMING PARAMETERS
-	
+	//it was done....
 	if (!a || !b || !a->data || !b->data) {
-		return false;	
+		printf("some data was missing please double check/n");
+		return false;
+		
 	}
 
 	int result = memcmp(a->data,b->data, sizeof(unsigned int) * a->rows * a->cols);
@@ -83,13 +123,21 @@ bool equal_matrices (Matrix_t* a, Matrix_t* b) {
 	return false;
 }
 
-	//TODO FUNCTION COMMENT
+//TODO FUNCTION COMMENT
+/*
+ * PURPOSE:copy a matrix from one memory location to another location 	
+ * INPUTS: the pointer of source Matrix structure 
+ the pointer of the destination Matrix structure
+ * RETURN: ture if successed copied the matrix to the new memory location.
+ false if the pointer of the sourse matrix is empty.
+ **/
 bool duplicate_matrix (Matrix_t* src, Matrix_t* dest) {
 
 
 	//TODO ERROR CHECK INCOMING PARAMETERS
 
-	if (!src) {
+	if (!src || !src-> data) {
+		printf("Missing source matrix!");
 		return false;
 	}
 	/*
@@ -100,11 +148,20 @@ bool duplicate_matrix (Matrix_t* src, Matrix_t* dest) {
 	return equal_matrices (src,dest);
 }
 
-	//TODO FUNCTION COMMENT
+//TODO FUNCTION COMMENT
+/*
+ * PURPOSE: operate the bitwise shift to the whole matrix
+ * INPUTS:the pointer of the matrix 
+ the shift direction which is a char variable('L' for left , otherwise all counts as right)
+ the unsighned interger number of places(bit) of the shift operation
+ * RETURN: ture if successed
+ False if the pointer of the matrix is empty.
+ **/
 bool bitwise_shift_matrix (Matrix_t* a, char direction, unsigned int shift) {
 	
 	//TODO ERROR CHECK INCOMING PARAMETERS
-	if (!a) {
+	if (!a||!a->data|| ! shift) {
+		printf("Missing source matrix or shift commands!\n");
 		return false;
 	}
 
@@ -112,7 +169,7 @@ bool bitwise_shift_matrix (Matrix_t* a, char direction, unsigned int shift) {
 		unsigned int i = 0;
 		for (; i < a->rows; ++i) {
 			unsigned int j = 0;
-			for (; j < a->rows; ++j) {
+			for (; j < a->cols; ++j) {
 				a->data[i * a->cols + j] = a->data[i * a->cols + j] << shift;
 			}
 		}
@@ -132,11 +189,25 @@ bool bitwise_shift_matrix (Matrix_t* a, char direction, unsigned int shift) {
 }
 
 	//TODO FUNCTION COMMENT
+/*
+ * PURPOSE:combine two matrix into one matrix 
+ * INPUTS: first sourse matrix pointer 
+ second sourse matrix pointer
+ a pointer of the destination matrix for the combination process
+ * RETURN: ture if successed
+ false if the size of the two sourse matrix is not equal.
+ **/
 bool add_matrices (Matrix_t* a, Matrix_t* b, Matrix_t* c) {
 
 	//TODO ERROR CHECK INCOMING PARAMETERS
-
+	if(!a||!b){
+		printf("one of the matrix is not exist! please create it first!\n");
+		return false;
+	}
+	
+	
 	if (a->rows != b->rows && a->cols != b->cols) {
+		printf("The two matrix does not have the same size!/n");
 		return false;
 	}
 
@@ -148,11 +219,20 @@ bool add_matrices (Matrix_t* a, Matrix_t* b, Matrix_t* c) {
 	return true;
 }
 
-	//TODO FUNCTION COMMENT
+//TODO FUNCTION COMMENT
+/*
+ * PURPOSE: print out the matrix  
+ * INPUTS: the pointer of the matrix that is ready to be print out
+ * RETURN:null
+ **/
 void display_matrix (Matrix_t* m) {
 	
 	//TODO ERROR CHECK INCOMING PARAMETERS
-
+if(!m){
+	printf("Matrix can not be displayed, because it does not exist!");
+	return false;
+	
+}
 
 	printf("\nMatrix Contents (%s):\n", m->name);
 	printf("DIM = (%u,%u)\n", m->rows, m->cols);
@@ -167,10 +247,29 @@ void display_matrix (Matrix_t* m) {
 }
 
 	//TODO FUNCTION COMMENT
+	/*
+ * PURPOSE:open a file in readonly mode and load the matrix from the file into the destination matrix
+ * INPUTS: 
+Name of the file which contains a matrix
+the pointer of the matrix array
+ * RETURN: return ture if  successed load the matrix from the sourse file into the memory location of the destination matrix
+ return false for an error in the process.
+ **/
 bool read_matrix (const char* matrix_input_filename, Matrix_t** m) {
 	
 	//TODO ERROR CHECK INCOMING PARAMETERS
 
+	if(! matrix_input_filename){
+		Printf("Missing source file name!");
+		return false;
+	}
+	
+	if(! m){
+		printf("This matrix does not exist!");
+		return false;
+	}
+	
+	
 
 	int fd = open(matrix_input_filename,O_RDONLY);
 	if (fd < 0) {
@@ -300,10 +399,29 @@ bool read_matrix (const char* matrix_input_filename, Matrix_t** m) {
 }
 
 	//TODO FUNCTION COMMENT
+	/*
+ * PURPOSE: write a matrix into a file 
+ * INPUTS:
+ the filename of the destination file  
+ the pointer that points to the source matrix
+ * RETURN: return ture is successed
+ return false for an error in the process.
+ **/
 bool write_matrix (const char* matrix_output_filename, Matrix_t* m) {
 	
 	//TODO ERROR CHECK INCOMING PARAMETERS
 
+	if(! matrix_output_filename){
+		Printf("Missing dest file name!");
+		return false;
+	}
+	
+	if(! m){
+		printf("This matrix does not exist!");
+		return false;
+	}
+	
+	
 	int fd = open (matrix_output_filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	/* ERROR HANDLING USING errorno*/
 	if (fd < 0) {
@@ -368,10 +486,29 @@ bool write_matrix (const char* matrix_output_filename, Matrix_t* m) {
 }
 
 	//TODO FUNCTION COMMENT
+	/*
+ * PURPOSE: generate a matrix with random data in the given maxtix memory location
+ * INPUTS: pointer that points to a matrix structure
+ the minimon number of the random matrix data variable
+ the maximon number of the random matrix data variable
+ * RETURN: return ture if no error occurred
+ **/
 bool random_matrix(Matrix_t* m, unsigned int start_range, unsigned int end_range) {
 	
 	//TODO ERROR CHECK INCOMING PARAMETERS
-
+	
+	if(!m){
+		printf("Matrix does not exist !\n");
+		return false;
+		
+	}
+	
+	if(start_range<0 || end_range <0 || start_range > end_range){
+		printf("please double check the range settings");
+		return false;
+	}
+	
+	
 	for (unsigned int i = 0; i < m->rows; ++i) {
 		for (unsigned int j = 0; j < m->cols; ++j) {
 			m->data[i * m->cols + j] = rand() % end_range + start_range;
@@ -382,17 +519,53 @@ bool random_matrix(Matrix_t* m, unsigned int start_range, unsigned int end_range
 
 /*Protected Functions in C*/
 
-	//TODO FUNCTION COMMENT
+//TODO FUNCTION COMMENT
+/*
+ * PURPOSE:copy data array from one memory location into a matrix memory area 
+ * INPUTS:
+ the pointer that points to the destination matrix
+ the pointer that points to the source data
+ * RETURN:Null
+ **/
 void load_matrix (Matrix_t* m, unsigned int* data) {
 	
 	//TODO ERROR CHECK INCOMING PARAMETERS
+	
+	if(!m){
+		printf("Matrix does not exist!\n");
+		return;
+	}
+	
+	if(!data){
+		printf("There is no data to load\n");
+		return;
+	}
+	
 	memcpy(m->data,data,m->rows * m->cols * sizeof(unsigned int));
 }
 
-	//TODO FUNCTION COMMENT
+//TODO FUNCTION COMMENT
+/*
+ * PURPOSE: store the source matrix into the matrix array
+ * INPUTS:
+   the pointer that points to the pointer of the matrix(the pointer array)
+   the pointer that points to the matrix which is going to be added to the matrix array
+   the size of the matrix array(which is 10 according to the main)
+ * RETURN:
+  the current position of the matrix array(shows how many matrix being stored in the matrix array so far)
+ **/
 unsigned int add_matrix_to_array (Matrix_t** mats, Matrix_t* new_matrix, unsigned int num_mats) {
 	
 	//TODO ERROR CHECK INCOMING PARAMETERS
+	if( !(*Mats) ||!new_matrix||0>num_mats|| num_mats >10 )
+	{
+		printf("Please double check the input variables!");
+		return -1;
+	}
+	
+	
+	
+	
 	static long int current_position = 0;
 	const long int pos = current_position % num_mats;
 	if ( mats[pos] ) {

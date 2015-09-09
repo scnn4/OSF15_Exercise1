@@ -18,7 +18,17 @@ unsigned int find_matrix_given_name (Matrix_t** mats, unsigned int num_mats,
 // TODO complete the defintion of this function. 
 void destroy_remaining_heap_allocations(Matrix_t **mats, unsigned int num_mats);
 
-	//TODO FUNCTION COMMENT
+//TODO FUNCTION COMMENT
+/*
+ * PURPOSE: instantiates the whole program, generate the matrix array with the first element in the array as a ramdon matrix with the size of 5X5 and value between 10 to 15
+the program also allocate the memory space for the matrix array, while it will release the memory that it took for running when the user type "exit"
+the program reads users' command and calls the corresponding functions 
+ * INPUTS: 
+ * argc :argument count
+ * argv:argument vector
+ * RETURN: -1 if the program failed to instantiate the matrix array
+ return 0 if the program is excuted 
+ **/
 int main (int argc, char **argv) {
 	srand(time(NULL));		
 	char *line = NULL;
@@ -61,8 +71,29 @@ int main (int argc, char **argv) {
 }
 
 	//TODO FUNCTION COMMENT
+		/*
+ * PURPOSE: read the command from the user and call the corresponding functions to do the job.
+ * INPUTS:
+ *cmd: the point of the command structure(Commands array)
+ *mats:the matrix array 
+ *num_mats: the size of the matrix array
+ * RETURN: NULL
+ **/
 void run_commands (Commands_t* cmd, Matrix_t** mats, unsigned int num_mats) {
 	//TODO ERROR CHECK INCOMING PARAMETERS
+if (!cmd){
+	printf("No commands exist\n!");
+	return;
+}
+if (!mats||!(*mats)){
+	printf("No matrix exist\n!");
+    return; 
+}
+
+if (num_mats<0){
+	printf("Please double check the number of the matrics\n");
+	return;
+}
 
 
 	/*Parsing and calling of commands*/
@@ -196,9 +227,33 @@ void run_commands (Commands_t* cmd, Matrix_t** mats, unsigned int num_mats) {
 }
 
 	//TODO FUNCTION COMMENT
+/*
+ * PURPOSE:find the the index of a matrix which was stored in the matrix array by matching its name
+ * INPUTS:
+ * mats: the  matrix array
+ * num_mats: the size of the matrixarray
+ * targer ： the name of the targeted matrix  
+ * RETURN:
+ * If find match return the index of the targeted matrix
+ * If did not find any matrix with the given name, return -1 
+ **/
 unsigned int find_matrix_given_name (Matrix_t** mats, unsigned int num_mats, const char* target) {
 	//TODO ERROR CHECK INCOMING PARAMETERS
+if (!mats||!(*mats)){
+	printf("No matrix exist\n!");
+    return; 
+}
 
+if (num_mats<0){
+	printf("Please double check the number of the matrics\n");
+	return;
+}
+
+if (!target){
+	printf("The matrix name is missing!\n");
+	return;
+	
+}
 	for (int i = 0; i < num_mats; ++i) {
 		if (strncmp(mats[i]->name,target,strlen(mats[i]->name)) == 0) {
 			return i;
@@ -208,9 +263,31 @@ unsigned int find_matrix_given_name (Matrix_t** mats, unsigned int num_mats, con
 }
 
 	//TODO FUNCTION COMMENT
-void destroy_remaining_heap_allocations(Matrix_t **mats, unsigned int num_mats) {
-	
+		/*
+ * PURPOSE:relase the memory location that was taken to store the matrix
+ * INPUTS:
+ * mats: the matrix array
+ * num_mats: the size of the Matrix array
+ * RETURN:NULL
+ **/
+void destroy_remaining_heap_allocations(Matrix_t** mats, unsigned int num_mats) {
 	//TODO ERROR CHECK INCOMING PARAMETERS
-
+if(!mats||!(*mats)){
+	printf("Can not locate the matrix array!\n");
+	return;
+}
+	
+	
 	// COMPLETE MISSING MEMORY CLEARING HERE
+	
+	for (int i = 0; i < num_cmds; ++i) {
+		free((*mats)->name);
+		free((*mates)->rows);
+		free((*mates)->cols);
+		free((*mates)->data);
+	}
+	free(*mates);
+	free(num_mats)
+	*mates = NULL;
+	
 }
