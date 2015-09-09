@@ -90,9 +90,6 @@ if (!mats||!(*mats)){
     return; 
 }
 
-if (num_mats<0){
-	printf("Please double check the number of the matrics\n");
-	return;
 }
 
 
@@ -241,17 +238,13 @@ unsigned int find_matrix_given_name (Matrix_t** mats, unsigned int num_mats, con
 	//TODO ERROR CHECK INCOMING PARAMETERS
 if (!mats||!(*mats)){
 	printf("No matrix exist\n!");
-    return; 
+    return -1; 
 }
 
-if (num_mats<0){
-	printf("Please double check the number of the matrics\n");
-	return;
-}
 
 if (!target){
 	printf("The matrix name is missing!\n");
-	return;
+	return -1;
 	
 }
 	for (int i = 0; i < num_mats; ++i) {
@@ -280,13 +273,13 @@ if(!mats||!(*mats)){
 	
 	// COMPLETE MISSING MEMORY CLEARING HERE
 	
-	for (int i = 0; i < num_cmds; ++i) {
+	for (int i = 0; i < num_mats; ++i) {
 		free((*mats)->name);
-		free((*mates)->rows);
-		free((*mates)->cols);
-		free((*mates)->data);
+		free((*mats)->rows);
+		free((*mats)->cols);
+		free((*mats)->data);
 	}
-	free(*mates);
+	free(*mats);
 	free(num_mats)
 	*mates = NULL;
 	
