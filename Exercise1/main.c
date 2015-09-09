@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <time.h>
 
-//#include<readline/readline.h>
+#include<readline/readline.h>
 
 #include "command.h"
 #include "matrix.h"
@@ -262,13 +262,12 @@ if(!mats||!(*mats)){
 	// COMPLETE MISSING MEMORY CLEARING HERE
 
 	for (int i = 0; i < num_mats; ++i) {
-		free(*(mats+i)->name);
-		free(*(mats+i)->rows);
-		free(*(mats+i)->cols);
-		free(*(mats+i)->data);
+		free((mats+i)->name);
+		free((mats+i)->rows);
+		free((mats+i)->cols);
+		free((mats+i)->data);
 		free(*(mats+i));
 	}
 
-	free(num_mats);
 
 }
