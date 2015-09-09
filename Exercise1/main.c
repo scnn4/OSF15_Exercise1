@@ -94,8 +94,7 @@ if (!mats||!(*mats)){
 
 
 	/*Parsing and calling of commands*/
-	if (strncmp(cmd->cmds[0],"display",strlen("display") + 1) == 0
-		&& cmd->num_cmds == 2) {
+	if (strncmp(cmd->cmds[0],"display",strlen("display") + 1) == 0 && cmd->num_cmds == 2) {
 			/*find the requested matrix*/
 			int idx = find_matrix_given_name(mats,num_mats,cmd->cmds[1]);
 			if (idx >= 0) {
@@ -106,8 +105,7 @@ if (!mats||!(*mats)){
 				return;
 			}
 	}
-	else if (strncmp(cmd->cmds[0],"add",strlen("add") + 1) == 0
-		&& cmd->num_cmds == 4) {
+	else if (strncmp(cmd->cmds[0],"add",strlen("add") + 1) == 0 && cmd->num_cmds == 4) {
 			int mat1_idx = find_matrix_given_name(mats,num_mats,cmd->cmds[1]);
 			int mat2_idx = find_matrix_given_name(mats,num_mats,cmd->cmds[2]);
 			if (mat1_idx >= 0 && mat2_idx >= 0) {
@@ -127,8 +125,7 @@ if (!mats||!(*mats)){
 				}
 			}
 	}
-	else if (strncmp(cmd->cmds[0],"duplicate",strlen("duplicate") + 1) == 0
-		&& cmd->num_cmds == 3 && strlen(cmd->cmds[1]) + 1 <= MATRIX_NAME_LEN) {
+	else if (strncmp(cmd->cmds[0],"duplicate",strlen("duplicate") + 1) == 0 && cmd->num_cmds == 3 && strlen(cmd->cmds[1]) + 1 <= MATRIX_NAME_LEN) {
 		int mat1_idx = find_matrix_given_name(mats,num_mats,cmd->cmds[1]);
 		if (mat1_idx >= 0 ) {
 				Matrix_t* dup_mat = NULL;
@@ -145,8 +142,7 @@ if (!mats||!(*mats)){
 			return;
 		}
 	}
-	else if (strncmp(cmd->cmds[0],"equal",strlen("equal") + 1) == 0
-		&& cmd->num_cmds == 2) {
+	else if (strncmp(cmd->cmds[0],"equal",strlen("equal") + 1) == 0 && cmd->num_cmds == 2) {
 			int mat1_idx = find_matrix_given_name(mats,num_mats,cmd->cmds[1]);
 			int mat2_idx = find_matrix_given_name(mats,num_mats,cmd->cmds[2]);
 			if (mat1_idx >= 0 && mat2_idx >= 0) {
@@ -162,8 +158,7 @@ if (!mats||!(*mats)){
 				return;
 			}
 	}
-	else if (strncmp(cmd->cmds[0],"shift",strlen("shift") + 1) == 0
-		&& cmd->num_cmds == 4) {
+	else if (strncmp(cmd->cmds[0],"shift",strlen("shift") + 1) == 0 && cmd->num_cmds == 4) {
 		int mat1_idx = find_matrix_given_name(mats,num_mats,cmd->cmds[1]);
 		const int shift_value = atoi(cmd->cmds[3]);
 		if (mat1_idx >= 0 ) {
@@ -176,8 +171,7 @@ if (!mats||!(*mats)){
 		}
 
 	}
-	else if (strncmp(cmd->cmds[0],"read",strlen("read") + 1) == 0
-		&& cmd->num_cmds == 2) {
+	else if (strncmp(cmd->cmds[0],"read",strlen("read") + 1) == 0 && cmd->num_cmds == 2) {
 		Matrix_t* new_matrix = NULL;
 		if(! read_matrix(cmd->cmds[1],&new_matrix)) {
 			printf("Read Failed\n");
@@ -187,8 +181,7 @@ if (!mats||!(*mats)){
 		add_matrix_to_array(mats,new_matrix, num_mats); //TODO ERROR CHECK NEEDED
 		printf("Matrix (%s) is read from the filesystem\n", cmd->cmds[1]);	
 	}
-	else if (strncmp(cmd->cmds[0],"write",strlen("write") + 1) == 0
-		&& cmd->num_cmds == 2) {
+	else if (strncmp(cmd->cmds[0],"write",strlen("write") + 1) == 0 && cmd->num_cmds == 2) {
 		int mat1_idx = find_matrix_given_name(mats,num_mats,cmd->cmds[1]);
 		if(! write_matrix(mats[mat1_idx]->name,mats[mat1_idx])) {
 			printf("Write Failed\n");
@@ -198,8 +191,7 @@ if (!mats||!(*mats)){
 			printf("Matrix (%s) is wrote out to the filesystem\n", mats[mat1_idx]->name);
 		}
 	}
-	else if (strncmp(cmd->cmds[0], "create", strlen("create") + 1) == 0
-		&& strlen(cmd->cmds[1]) + 1 <= MATRIX_NAME_LEN && cmd->num_cmds == 4) {
+	else if (strncmp(cmd->cmds[0], "create", strlen("create") + 1) == 0 && strlen(cmd->cmds[1]) + 1 <= MATRIX_NAME_LEN && cmd->num_cmds == 4) {
 		Matrix_t* new_mat = NULL;
 		const unsigned int rows = atoi(cmd->cmds[2]);
 		const unsigned int cols = atoi(cmd->cmds[3]);
@@ -208,8 +200,7 @@ if (!mats||!(*mats)){
 		add_matrix_to_array(mats,new_mat,num_mats); // TODO ERROR CHECK NEEDED
 		printf("Created Matrix (%s,%u,%u)\n", new_mat->name, new_mat->rows, new_mat->cols);
 	}
-	else if (strncmp(cmd->cmds[0], "random", strlen("random") + 1) == 0
-		&& cmd->num_cmds == 4) {
+	else if (strncmp(cmd->cmds[0], "random", strlen("random") + 1) == 0 && cmd->num_cmds == 4) {
 		int mat1_idx = find_matrix_given_name(mats,num_mats,cmd->cmds[1]);
 		const unsigned int start_range = atoi(cmd->cmds[2]);
 		const unsigned int end_range = atoi(cmd->cmds[3]);
@@ -281,6 +272,6 @@ if(!mats||!(*mats)){
 	}
 	free(*mats);
 	free(num_mats)
-	*mates = NULL;
+	*mats = NULL;
 	
 }
