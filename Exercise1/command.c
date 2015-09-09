@@ -26,17 +26,17 @@ bool parse_user_input (const char* input, Commands_t** cmd){
 	//TODO ERROR CHECK INCOMING PARAMETERS
 
 	if (! input ){
-		printf("no input detected!\n")
+		printf("no input detected!\n");
 		return false;
 	}
-	
+
 	if(! cmd){
-		printf("No commend array detected!\n")
+		printf("No commend array detected!\n");
 		return false;
 	}
-	
-	
-	
+
+
+
 	char *string = strdup(input);
 
 	*cmd = calloc (1,sizeof(Commands_t));
@@ -71,10 +71,10 @@ void destroy_commands(Commands_t** cmd) {
 
 	//TODO ERROR CHECK INCOMING PARAMETERS
 		if(! cmd){
-		printf("No commend array detected!\n")
+		printf("No commend array detected!\n");
 		return;
 	}
-	
+
 
 	for (int i = 0; i < (*cmd)->num_cmds; ++i) {
 		free((*cmd)->cmds[i]);

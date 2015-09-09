@@ -6,31 +6,31 @@
 #include <stdbool.h>
 #include <time.h>
 
-#include<readline/readline.h>
+//#include<readline/readline.h>
 
 #include "command.h"
 #include "matrix.h"
 
 void run_commands (Commands_t* cmd, Matrix_t** mats, unsigned int num_mats);
-unsigned int find_matrix_given_name (Matrix_t** mats, unsigned int num_mats, 
+unsigned int find_matrix_given_name (Matrix_t** mats, unsigned int num_mats,
 			const char* target);
 
-// TODO complete the defintion of this function. 
+// TODO complete the defintion of this function.
 void destroy_remaining_heap_allocations(Matrix_t **mats, unsigned int num_mats);
 
 //TODO FUNCTION COMMENT
 /*
  * PURPOSE: instantiates the whole program, generate the matrix array with the first element in the array as a ramdon matrix with the size of 5X5 and value between 10 to 15
 the program also allocate the memory space for the matrix array, while it will release the memory that it took for running when the user type "exit"
-the program reads users' command and calls the corresponding functions 
- * INPUTS: 
+the program reads users' command and calls the corresponding functions
+ * INPUTS:
  * argc :argument count
  * argv:argument vector
  * RETURN: -1 if the program failed to instantiate the matrix array
- return 0 if the program is excuted 
+ return 0 if the program is excuted
  **/
 int main (int argc, char **argv) {
-	srand(time(NULL));		
+	srand(time(NULL));
 	char *line = NULL;
 	Commands_t* cmd;
 
@@ -51,12 +51,12 @@ int main (int argc, char **argv) {
 
 	line = readline("> ");
 	while (strncmp(line,"exit", strlen("exit")  + 1) != 0) {
-		
+
 		if (!parse_user_input(line,&cmd)) {
 			printf("Failed at parsing command\n\n");
 		}
-		
-		if (cmd->num_cmds > 1) {	
+
+		if (cmd->num_cmds > 1) {
 			run_commands(cmd,mats,10);
 		}
 		if (line) {
@@ -67,7 +67,7 @@ int main (int argc, char **argv) {
 	}
 	free(line);
 	destroy_remaining_heap_allocations(mats,10);
-	return 0;	
+	return 0;
 }
 
 	//TODO FUNCTION COMMENT
@@ -75,7 +75,7 @@ int main (int argc, char **argv) {
  * PURPOSE: read the command from the user and call the corresponding functions to do the job.
  * INPUTS:
  *cmd: the point of the command structure(Commands array)
- *mats:the matrix array 
+ *mats:the matrix array
  *num_mats: the size of the matrix array
  * RETURN: NULL
  **/
@@ -87,11 +87,8 @@ if (!cmd){
 }
 if (!mats||!(*mats)){
 	printf("No matrix exist\n!");
-    return; 
+    return;
 }
-
-}
-
 
 	/*Parsing and calling of commands*/
 	if (strncmp(cmd->cmds[0],"display",strlen("display") + 1) == 0 && cmd->num_cmds == 2) {
@@ -110,18 +107,18 @@ if (!mats||!(*mats)){
 			int mat2_idx = find_matrix_given_name(mats,num_mats,cmd->cmds[2]);
 			if (mat1_idx >= 0 && mat2_idx >= 0) {
 				Matrix_t* c = NULL;
-				if( !create_matrix (&c,cmd->cmds[3], mats[mat1_idx]->rows, 
+				if( !create_matrix (&c,cmd->cmds[3], mats[mat1_idx]->rows,
 						mats[mat1_idx]->cols)) {
 					printf("Failure to create the result Matrix (%s)\n", cmd->cmds[3]);
 					return;
 				}
-			
+
 				add_matrix_to_array(mats,c, num_mats); //TODO ERROR CHECK NEEDED
 
 
 				if (! add_matrices(mats[mat1_idx], mats[mat2_idx],c) ) {
 					printf("Failure to add %s with %s into %s\n", mats[mat1_idx]->name, mats[mat2_idx]->name,c->name);
-					return;	
+					return;
 				}
 			}
 	}
@@ -129,7 +126,7 @@ if (!mats||!(*mats)){
 		int mat1_idx = find_matrix_given_name(mats,num_mats,cmd->cmds[1]);
 		if (mat1_idx >= 0 ) {
 				Matrix_t* dup_mat = NULL;
-				if( !create_matrix (&dup_mat,cmd->cmds[2], mats[mat1_idx]->rows, 
+				if( !create_matrix (&dup_mat,cmd->cmds[2], mats[mat1_idx]->rows,
 						mats[mat1_idx]->cols)) {
 					return;
 				}
@@ -176,10 +173,10 @@ if (!mats||!(*mats)){
 		if(! read_matrix(cmd->cmds[1],&new_matrix)) {
 			printf("Read Failed\n");
 			return;
-		}	
-		
+		}
+
 		add_matrix_to_array(mats,new_matrix, num_mats); //TODO ERROR CHECK NEEDED
-		printf("Matrix (%s) is read from the filesystem\n", cmd->cmds[1]);	
+		printf("Matrix (%s) is read from the filesystem\n", cmd->cmds[1]);
 	}
 	else if (strncmp(cmd->cmds[0],"write",strlen("write") + 1) == 0 && cmd->num_cmds == 2) {
 		int mat1_idx = find_matrix_given_name(mats,num_mats,cmd->cmds[1]);
@@ -220,23 +217,23 @@ if (!mats||!(*mats)){
  * INPUTS:
  * mats: the  matrix array
  * num_mats: the size of the matrixarray
- * targer ： the name of the targeted matrix  
+ * targer ： the name of the targeted matrix
  * RETURN:
  * If find match return the index of the targeted matrix
- * If did not find any matrix with the given name, return -1 
+ * If did not find any matrix with the given name, return -1
  **/
 unsigned int find_matrix_given_name (Matrix_t** mats, unsigned int num_mats, const char* target) {
 	//TODO ERROR CHECK INCOMING PARAMETERS
 if (!mats||!(*mats)){
 	printf("No matrix exist\n!");
-    return -1; 
+    return -1;
 }
 
 
 if (!target){
 	printf("The matrix name is missing!\n");
 	return -1;
-	
+
 }
 	for (int i = 0; i < num_mats; ++i) {
 		if (strncmp(mats[i]->name,target,strlen(mats[i]->name)) == 0) {
@@ -260,18 +257,18 @@ if(!mats||!(*mats)){
 	printf("Can not locate the matrix array!\n");
 	return;
 }
-	
-	
+
+
 	// COMPLETE MISSING MEMORY CLEARING HERE
-	
+
 	for (int i = 0; i < num_mats; ++i) {
-		free((*mats)->name);
-		free((*mats)->rows);
-		free((*mats)->cols);
-		free((*mats)->data);
+		free(*(mats+i)->name);
+		free(*(mats+i)->rows);
+		free(*(mats+i)->cols);
+		free(*(mats+i)->data);
+		free(*(mats+i));
 	}
-	free(*mats);
-	free(num_mats)
-	*mats = NULL;
-	
+
+	free(num_mats);
+
 }
